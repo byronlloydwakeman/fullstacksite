@@ -1,16 +1,35 @@
-import { Link, Outlet, useParams } from "react-router-dom";
-import { projects } from "./ProjectList";
+import { Link, useParams } from "react-router-dom";
+import { NotFound } from "./404NotFound";
+import { useState, useEffect } from "react";
 
 export function ProjectPage(){
-    const { id } = useParams();
-    console.log(id);
-    var project = projects.find(element => element.id === id)
+    const { title } = useParams();
 
-    if(!project) return 
+    const [projectInfo, setProjectInfo] = useState({ _id: "", title: "", content: "" });
+
+    const url = `/api/project/${title}`;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await fetch(url);
+            const body = await result.json();
+            setProjectInfo(body)
+        }
+        fetchData();
+
+    }, [title])
+
+    console.log(projectInfo);
+    if(!projectInfo)
+    {
+        return <NotFound/>;
+    } 
 
     return (
         <div>
-            <p>{project.content}</p>
+            <h1>{`id is ${projectInfo._id}`}</h1>
+            <h1>{`title is ${projectInfo.title}`}</h1>
+            <h1>{`content is ${projectInfo.content}`}</h1>
         </div>
     );
 }
@@ -20,11 +39,7 @@ export function ProjectMainPage()
     return (
         <>
             <h1>Projects</h1> 
-            {projects.map((project, key) => (
-                <Link key={key} to={`/project/${project.id}`}>
-                    {project.title}
-                </Link>
-            ))}
+            <Link to="/project/Wind Turbine">Wind Turbine</Link>
         </>
     )
 }

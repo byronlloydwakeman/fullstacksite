@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useRouteMatch, useParams } from "react-ro
 import { HomePage } from "./Pages/HomePage";
 import { AboutPage } from "./Pages/AboutPage";
 import { ProjectPage, ProjectMainPage } from "./Pages/ProjectPage";
+import { NotFound } from "./Pages/404NotFound";
 
 
 ReactDOM.render(
@@ -12,7 +13,8 @@ ReactDOM.render(
             <Route path="/" element={<HomePage/>}/>
             <Route path="/about" element={<AboutPage/>}/>
             <Route exact path="/project" element={<ProjectMainPage/>}/>
-            <Route exact path="/project/:id" element={<ProjectPage/>}/>
+            <Route exact path="/project/:title" element={<ProjectPage/>}/>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>
     </BrowserRouter>,
     document.getElementById("root")
